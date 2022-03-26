@@ -1,0 +1,28 @@
+%div{ class: 'flex' }
+    %div{ style: 'width: 70%' }
+        %h1 My Doctors
+        %table
+            %thead
+                %tr
+                    %td ID
+                    %td Name
+                    %td # of Prescriptons
+                    %td Created at
+                    %td Action
+            %tbody
+            - if @doctors.empty?
+                %tr
+                    %td{ colspan: 5, style: 'text-align: center' } No doctors avaiable.
+            - @doctors.each do |doctor|
+                %tr
+                    %td= doctor.id
+                    %td= doctor.full_name
+                    %td= doctor.prescriptions.count
+                    %td= doctor.created_at.strftime("%Y-%m-%d")
+                    %td
+                        = link_to 'Edit', edit_doctor_path(doctor)
+                        = link_to 'Delete', doctor, method: :delete, data: {confirm: 'Do you want to delete this doctor?'}
+                        = link_to 'Prescriptions', doctor_prescriptions_path(doctor)
+    %div{ style: 'width: 30%' }
+        %h1 Add Doctor
+        = render 'form'

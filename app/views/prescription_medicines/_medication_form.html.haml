@@ -1,0 +1,39 @@
+= form_for [@doctor, @prescription] do |prescription|
+    %div{ class: 'info' }
+        = prescription.fields_for :prescription_medicines do |presc_med|
+            = presc_med.hidden_field :prescription_id, :value => 1
+            %div{ 'data-attr': 'medicine_id', class: 'd-grid' }
+                = presc_med.label 'Medicines'
+                = presc_med.collection_select :medicine_id, @medicines, :id, :name, { prompt: "Please select a medicine" }
+            %div{ 'data-attr': 'qty', class: 'd-grid' }
+                = presc_med.label 'QTY'
+                = presc_med.number_field :qty
+            %div{ 'data-attr': 'note', class: 'd-grid' }
+                = presc_med.label :note
+                = presc_med.text_area :note, :rows => 5
+            %div{ 'data-attr': 'unit', class: 'd-grid' }
+                = presc_med.label :unit
+                = presc_med.text_field :unit
+    %button{ id: 'new_row' } Add New Row
+    = prescription.submit
+
+:javascript
+    document.getElementById('new_row').addEventListener('click', newRowEventHandler)
+
+    function newRowEventHandler (e) {
+        e.preventDefault()
+        let form = document.getElementById('new_prescription')
+        let infos = document.getElementsByClassName('info')
+        let clonedInfo = infos[infos.length - 1].cloneNode(true)
+        infos[infos.length - 1].appendChild(clonedInfo)
+
+        for (let i = 0; i < infos.length; i++) {
+            let info = infos.item(i)
+            for (let j = 0; j < info.children.length; j++) {
+                let nameAttr = info.children[j].getAttribute('data-attr')
+                for (let k = 0; k < info.children[j].children.length; k++) {
+                    info.children[j].children[k].setAttribute('name', `prescription[prescription_medicines_attributes][${i}][${nameAttr}]`)
+                }
+            }
+        }
+    }

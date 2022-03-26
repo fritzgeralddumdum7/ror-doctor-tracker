@@ -1,0 +1,10 @@
+- if @prescription.errors.any?
+    - @prescription.errors.each do |error|
+        %p{ class: 'error' }= error.full_message
+        - break
+
+= form_for [@doctor, @prescription] do |prescription|
+    = prescription.label :title
+    = prescription.text_field :title
+    = render 'prescription_medicines/medication_form', prescription: prescription
+    -# = prescription.submit

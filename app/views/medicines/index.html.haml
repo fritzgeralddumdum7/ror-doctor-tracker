@@ -1,0 +1,24 @@
+%div{ class: 'flex' }
+    %div{ style: 'width: 70%' }
+        %h1 Medicines
+        %table
+            %thead
+                %tr
+                    %td Name
+                    %td Price
+                    %td Type
+                    %td Action
+            %tbody
+            - if @medicines.empty?
+                %tr
+                    %td{ colspan: 4, style: 'text-align: center' } No medicines avaiable.
+            - @medicines.each do |medicine|
+                %tr
+                    %td= medicine.name
+                    %td= medicine.price
+                    %td= medicine.type_of
+                    %td
+                        = link_to 'Edit', edit_medicine_path(medicine)
+    %div{ style: 'width: 30%' }
+        %h1 Add Medicine
+        = render 'form'

@@ -1,0 +1,30 @@
+%div{ class: 'flex' }
+    %div{ style: 'width: 70%' }
+        %h1 Medications
+        %table
+            %thead
+                %tr
+                    %td Medicine
+                    %td Note
+                    %td QTY
+                    %td Unit
+                    %td Subtotal
+                    %td Action
+            %tbody
+            - if @medications.empty?
+                %tr
+                    %td{ colspan: 4, style: 'text-align: center' } No medications in this prescription.
+            - @medications.each do |medication|
+                %tr
+                    %td= medication.medicine.name
+                    %td= medication.note
+                    %td= medication.qty
+                    %td= medication.unit
+                    %td= medication.price
+                    %td
+                        = link_to 'View'
+                        = link_to 'Delete'
+        %h1= "Total: #{number_with_delimiter(number_with_precision(@prescription.prescription_medicines.sum(:price), precision: 2), :delimiter => ',')}"
+    %div{ style: 'width: 30%' }
+        %h1 Add Medication
+        = render 'medication_form'

@@ -1,0 +1,14 @@
+- if @doctor.errors.any?
+    - @doctor.errors.each do |error|
+        %p{ class: 'error' }= error.full_message
+        - break
+
+= form_with  model: @doctor do |form|
+    %div{ class: 'd-grid' }
+        = form.label :first_name
+        = form.text_field :first_name
+    %div{ class: 'd-grid' }
+        = form.label :last_name
+        = form.text_field :last_name
+    %div{ style: 'width: 200px; margin-top: 20px' }
+        = form.submit
